@@ -1,5 +1,5 @@
 scripts:
-  server: cd src && python manage.py runserver
+  server: cd src && python manage.py runserver 0.0.0.0:8000
   migrate: cd src && python manage.py migrate
   freeze: venv/bin/python -m pip freeze
   watch: npx tailwindcss -i ./src/static/tailwind/tailwind-input.css -o ./src/static/css/output.css --watch

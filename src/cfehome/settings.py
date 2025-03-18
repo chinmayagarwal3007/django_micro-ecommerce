@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure-(q3)w+fzzwwc616scd%9q*iuwfnkd6jec8n24y*!51gx*tt4z0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+'9900c58a-7b23-4ec1-bf9b-489f0184c1ef-00-23bb7w36yy8zt.sisko.replit.dev',
+]
 
 
 # Application definition
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'products'
 ]
 
 MIDDLEWARE = [
@@ -81,6 +84,7 @@ DATABASES = {
     }
 }
 
+from .db import * #noqa
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -112,6 +116,10 @@ USE_I18N = True
 
 USE_TZ = True
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://9900c58a-7b23-4ec1-bf9b-489f0184c1ef-00-23bb7w36yy8zt.sisko.replit.dev',
+    # Add any other origins if necessary
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
