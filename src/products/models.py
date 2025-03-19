@@ -6,6 +6,8 @@ class Product(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
     name = models.CharField(max_length=120)
     handle = models.SlugField(unique=True)
+    long_description = models.TextField(null=True)
+    short_description = models.TextField(null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=9.99)
     og_price = models.DecimalField(max_digits=10, decimal_places=2, default=9.99)
     stripe_price = models.IntegerField(default=999)

@@ -30,20 +30,20 @@ def product_list_view(request):
 
 def product_detail_view(request, slug=None):
   obj = get_object_or_404(Product, handle=slug)
+  context = {"object": obj}
   is_owner = False
   if request.user.is_authenticated:
     is_owner = obj.user == request.user
-  context = {"object": obj}
-  form = None
-  if is_owner:
-    if request.method == "POST":
-        form = ProductForm(request.POST, instance=obj)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = request.user
-            obj.save()
-            #return redirect('products:create')
-    else:
-      form = ProductForm(instance=obj)
-    context['form'] = form
+    form = None
+    if is_owner:
+      if request.method == "POST":
+          form = ProductForm(request.POST, instance=obj)
+          if form.is_valid():
+              obj = form.save(commit=False)
+              obj.user = request.user
+              obj.save()
+              #return redirect('products:create')
+      else:
+        form = ProductForm(instance=obj)
+      context['form'] = form
   return render(request, 'products/detail.html', context) 
