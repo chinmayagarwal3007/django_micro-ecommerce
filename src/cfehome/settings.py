@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
 '9900c58a-7b23-4ec1-bf9b-489f0184c1ef-00-23bb7w36yy8zt.sisko.replit.dev',
+'127.0.0.1',
 ]
 
 
