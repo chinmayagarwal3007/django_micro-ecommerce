@@ -1,6 +1,10 @@
 from django.db import models
 from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
+
+PROTECTED_MEDIA_ROOT = settings.PROTECTED_MEDIA_ROOT
+protected_storage = FileSystemStorage(location=str(PROTECTED_MEDIA_ROOT))
 
 class Product(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
@@ -25,3 +29,17 @@ class Product(models.Model):
 
     def __str__(self):
         return f'Product: {self.name}'
+
+def handle_product_attachment(instance, filename):
+    return f'products/{instance.product.handle}/attachments{filename}'
+    
+class ProductAttachment(models.Model):
+    product = models.ForeignKey(Product, related_name="attachments", on_delete=models.CASCADE)
+    file = models.FileField(upload_to=handle_product_attachment, storage=protected_storage)
+    is_free = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    timestamp = models.DateTimeField(auto_now_add=True)  
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Attachment for {self.product.name}"

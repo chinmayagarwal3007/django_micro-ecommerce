@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product
+from .models import Product, ProductAttachment
 
 
 input_css_class = "form-control"
@@ -21,3 +21,4 @@ class ProductUpdateForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields:
               self.fields[field].widget.attrs['class'] = input_css_class
+

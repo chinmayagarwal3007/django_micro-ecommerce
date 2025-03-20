@@ -4,7 +4,6 @@ from .models import Product
 
 # Create your views here.
 
-
 def product_create_view(request):
     context = {}
     if request.method == "POST":
