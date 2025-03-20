@@ -5,6 +5,7 @@ from django.utils import timezone
 class Product(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
     name = models.CharField(max_length=120)
+    image = models.ImageField(upload_to='products/', null=True, blank=True)
     handle = models.SlugField(unique=True)
     long_description = models.TextField(null=True)
     short_description = models.TextField(null=True)

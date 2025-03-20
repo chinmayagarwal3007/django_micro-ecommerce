@@ -127,6 +127,9 @@ CSRF_TRUSTED_ORIGINS = [
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
+MEDIA_URL = 'media/'
+STATIC_ROOT = BASE_DIR.parent /  "local-cdn" / "static"
+MEDIA_ROOT = BASE_DIR.parent /  "local-cdn" /  "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
