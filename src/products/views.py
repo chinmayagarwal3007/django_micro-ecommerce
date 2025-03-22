@@ -1,6 +1,8 @@
-from django.shortcuts import render, redirect,get_object_or_404
+from django.shortcuts import render, redirect,get_object_or_404 # type: ignore
 from .forms import ProductForm, ProductUpdateForm
-from .models import Product
+from .models import Product, ProductAttachment
+import mimetypes
+from django.http import FileResponse, HttpResponseBadRequest # type: ignore
 
 # Create your views here.
 
@@ -46,3 +48,18 @@ def product_detail_view(request, slug=None):
         form = ProductUpdateForm(instance=obj)
       context['form'] = form
   return render(request, 'products/detail.html', context) 
+
+def product_attachment_download_view(request, slug=None):
+   attachment = ProductAttachment.objects.all().first()
+   can_download = attachment.is_free or False
+   if request.user.is_authenticated:
+       can_download = True
+   if not can_download:
+       return HttpResponseBadRequest("You can't download this file")
+   file = attachment.file.open(mode='rb')
+   filename = attachment.file.name
+   content_type, _ = mimetypes.guess_type(filename)
+   response = FileResponse(file)
+   response['Content-Type'] = content_type or 'application/octet-stream'
+   response['Content-Disposition'] = f'attachment; filename={filename}'
+   return response

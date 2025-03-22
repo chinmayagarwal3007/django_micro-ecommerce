@@ -1,7 +1,7 @@
-from django.db import models
-from django.conf import settings
-from django.core.files.storage import FileSystemStorage
-from django.utils import timezone
+from django.db import models # type: ignore
+from django.conf import settings # type: ignore
+from django.core.files.storage import FileSystemStorage # type: ignore
+from django.utils import timezone # type: ignore
 
 PROTECTED_MEDIA_ROOT = settings.PROTECTED_MEDIA_ROOT
 protected_storage = FileSystemStorage(location=str(PROTECTED_MEDIA_ROOT))
@@ -31,7 +31,7 @@ class Product(models.Model):
         return f'Product: {self.name}'
 
 def handle_product_attachment(instance, filename):
-    return f'products/{instance.product.handle}/attachments{filename}'
+    return f'products/{instance.product.handle}/attachments/{filename}'
     
 class ProductAttachment(models.Model):
     product = models.ForeignKey(Product, related_name="attachments", on_delete=models.CASCADE)
