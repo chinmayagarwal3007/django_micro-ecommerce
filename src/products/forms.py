@@ -1,5 +1,6 @@
 from django import forms # type: ignore
 from .models import Product, ProductAttachment
+from django.forms import modelformset_factory, inlineformset_factory # type: ignore
 
 
 input_css_class = "form-control"
@@ -22,3 +23,7 @@ class ProductUpdateForm(forms.ModelForm):
         for field in self.fields:
               self.fields[field].widget.attrs['class'] = input_css_class
 
+
+ProductAttachmentModelFormSet = modelformset_factory(ProductAttachment, fields=['file', 'is_free', 'is_active'],extra=0,can_delete=False)
+
+ProductAttachmentInlineFormSet = inlineformset_factory(Product, ProductAttachment, formset=ProductAttachmentModelFormSet, fields=['file', 'is_free', 'is_active'],extra=0,can_delete=False)

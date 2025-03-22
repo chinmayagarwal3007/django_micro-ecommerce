@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Product{% endblock %}
+
+
+{% block content %} 
+
+<form method="POST" action="." enctype="multipart/form-data">
+
+  {% csrf_token %}
+  {{form.as_p}}
+  <br>
+
+  {{formset.management_form}}
+  {% for form in formset %}
+  <br>
+  {{form.as_p}}
+  {% endfor %}
+  
+  <button type="submit" class="btn-submit">Submit</button>
+
+  
+</form>
+
+{% endblock %}
