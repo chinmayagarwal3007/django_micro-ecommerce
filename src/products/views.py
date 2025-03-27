@@ -32,7 +32,6 @@ def product_list_view(request):
 
 def product_manage_detail_view(request, slug=None):
   obj = get_object_or_404(Product, handle=slug)
-  print(slug)
   context = {"object": obj}
   attachments = obj.attachments.all()
   for attachment in attachments:
@@ -59,9 +58,7 @@ def product_manage_detail_view(request, slug=None):
               except:
                   attachment_obj = None
               if is_delete:
-                print("Deleting")
                 if attachment_obj is not None:
-                  print("Deleting-1")
                   if attachment_obj.pk:
                     attachment_obj.delete()
               else:
