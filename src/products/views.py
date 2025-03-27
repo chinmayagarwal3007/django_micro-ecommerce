@@ -10,13 +10,13 @@ import os
 def product_create_view(request):
     context = {}
     if request.method == "POST":
-        form = ProductForm(request.POST)
+        form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             obj = form.save(commit=False)
             if request.user.is_authenticated:
               obj.user = request.user
               obj.save()
-              return redirect('products:create')
+              return redirect('products:manage', slug=obj.handle)
             else:
               form.add_error("User must be logged in")
     else:
@@ -32,6 +32,7 @@ def product_list_view(request):
 
 def product_manage_detail_view(request, slug=None):
   obj = get_object_or_404(Product, handle=slug)
+  print(slug)
   context = {"object": obj}
   attachments = obj.attachments.all()
   for attachment in attachments:
@@ -52,9 +53,22 @@ def product_manage_detail_view(request, slug=None):
             obj.save()
             formset.save(commit=False)
             for _form in formset:
-              attachment_obj = _form.save(commit=False)
-              attachment_obj.product = obj
-              attachment_obj.save()               
+              is_delete = _form.cleaned_data.get('DELETE')
+              try:
+                 attachment_obj = _form.save(commit=False)
+              except:
+                  attachment_obj = None
+              if is_delete:
+                print("Deleting")
+                if attachment_obj is not None:
+                  print("Deleting-1")
+                  if attachment_obj.pk:
+                    attachment_obj.delete()
+              else:
+                if attachment_obj is not None:
+                  attachment_obj.product = obj
+                  attachment_obj.save()
+            return redirect('products:manage', slug=obj.handle)               
     else:
       form = ProductUpdateForm(instance=obj)
       formset = ProductAttachmentInlineFormSet(queryset=attachments)

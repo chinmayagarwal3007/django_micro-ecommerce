@@ -11,15 +11,66 @@
   {{form.as_p}}
   <br>
 
+  <div>
   {{formset.management_form}}
+  <div id="attachments">
+
   {% for form in formset %}
   <br>
   {{form.as_p}}
   {% endfor %}
-  
-  <button type="submit" class="btn-submit">Submit</button>
+</div>
+</div>
+
+<button class="btn-submit" id="add-attachment-btn">Add Attachment</button>
+
+  <button type="submit" class="btn-submit">Save</button>
 
   
 </form>
+
+
+
+<div class="hidden" id = "blank-form">
+  {{formset.empty_form.as_p}}
+</div>
+
+
+<script>
+
+  const blankFormEl = document.getElementById('blank-form');
+  const attachmentsContainer = document.getElementById('attachments');
+  const addAttachmentBtn = document.getElementById('add-attachment-btn');
+  const managementFormInputEL = document.getElementById('id_form-TOTAL_FORMS');
+  addAttachmentBtn.addEventListener('click', handleAttachmentBtnClick);
+  function cloneBlankForm() {
+    if (blankFormEl) {
+      const newBlankForm = blankFormEl.cloneNode(true);
+      const totalFormValue = parseInt(managementFormInputEL.value);
+      var formRegex = new RegExp(`__prefix__`, 'g');
+      managementFormInputEL.value = totalFormValue + 1;
+      newBlankForm.innerHTML = newBlankForm.innerHTML.replace(formRegex, totalFormValue);
+      newBlankForm.classList.add('attachment-form');
+      newBlankForm.classList.remove('hidden');
+      newBlankForm.removeAttribute('id');
+      return newBlankForm;
+    }
+  }
+
+  function handleAttachmentBtnClick(event){
+    if(event)
+{
+  console.log("hello")
+event.preventDefault();
+} 
+const newForm = cloneBlankForm();
+attachmentsContainer.appendChild(newForm);
+attachmentsContainer.appendChild(document.createElement('br'));
+ }
+
+
+
+
+</script>
 
 {% endblock %}

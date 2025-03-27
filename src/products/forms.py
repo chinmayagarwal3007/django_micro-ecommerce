@@ -7,7 +7,7 @@ input_css_class = "form-control"
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'handle', 'price', 'long_description', 'short_description']
+        fields = ['name', 'handle', 'price', 'long_description', 'short_description', 'image']
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields:
@@ -24,6 +24,18 @@ class ProductUpdateForm(forms.ModelForm):
               self.fields[field].widget.attrs['class'] = input_css_class
 
 
-ProductAttachmentModelFormSet = modelformset_factory(ProductAttachment, fields=['file', 'is_free', 'is_active'],extra=0,can_delete=False)
+class ProductAttachmentForm(forms.ModelForm):
+    class Meta:
+        model = ProductAttachment
+        fields = ['file', 'is_free', 'is_active']
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+              if field in ('is_free', 'is_active'):   
+                continue
+              self.fields[field].widget.attrs['class'] = input_css_class
 
-ProductAttachmentInlineFormSet = inlineformset_factory(Product, ProductAttachment, formset=ProductAttachmentModelFormSet, fields=['file', 'is_free', 'is_active'],extra=0,can_delete=False)
+
+ProductAttachmentModelFormSet = modelformset_factory(ProductAttachment, form = ProductAttachmentForm, fields=['file', 'is_free', 'is_active'],  extra=0, can_delete=True)
+
+ProductAttachmentInlineFormSet = inlineformset_factory(Product, ProductAttachment, form = ProductAttachmentForm,formset=ProductAttachmentModelFormSet, fields=['file', 'is_free', 'is_active'],extra=0,can_delete=True)
